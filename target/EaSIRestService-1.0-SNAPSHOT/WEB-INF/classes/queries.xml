@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<queries>
+    <controller name="EmployeeController">
+        <query name="getAllEmployees">
+            <sql>
+	    <![CDATA[from Employee e]]>
+            </sql>
+        </query>
+        <query name="getEmployeeById">
+            <sql>
+	    <![CDATA[SELECT e FROM Employee e WHERE employeeid = :employeeid]]>
+            </sql>
+        </query>
+        <query name="deleteEmployeeById">
+            <sql>
+	    <![CDATA[DELETE FROM Employee e WHERE employeeid = :employeeid]]>
+            </sql>
+        </query>
+        <query name="updateEmployee">
+            <sql>
+	    <![CDATA[UPDATE Employee e set firstName=:firstName,lastName=:lastName,userName=:userName,password=:password,street=:street,city=:city,state=:state,pinCode=:pinCode,country=:country,emailId=:emailId,contactNo=:contactNo,dateOfBirth=:dateOfBirth,designation=:designation,dateOfJoining=:dateOfJoining,yearsOfExperience=:yearsOfExperience, reportingManager_Id=:reportingManager_Id WHERE employeeid = :employeeid]]>
+            </sql>
+        </query>
+    </controller>
+</queries>
