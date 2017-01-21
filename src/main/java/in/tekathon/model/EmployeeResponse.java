@@ -6,16 +6,15 @@
 package in.tekathon.model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,85 +23,65 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "EMPLOYEE")
 @XmlRootElement
-/*@NamedQueries({
-    @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e")
-    , @NamedQuery(name = "Employee.findByEmployeeId", query = "SELECT e FROM Employee e WHERE e.employeeid = :employeeid")
-    , @NamedQuery(name = "Employee.findByFirstname", query = "SELECT e FROM Employee e WHERE e.firstname = :firstname")
-    , @NamedQuery(name = "Employee.findByLastname", query = "SELECT e FROM Employee e WHERE e.lastname = :lastname")
-    , @NamedQuery(name = "Employee.findByUsername", query = "SELECT e FROM Employee e WHERE e.username = :username")
-    , @NamedQuery(name = "Employee.findByPassword", query = "SELECT e FROM Employee e WHERE e.password = :password")
-    , @NamedQuery(name = "Employee.findByStreet", query = "SELECT e FROM Employee e WHERE e.street = :street")
-    , @NamedQuery(name = "Employee.findByCity", query = "SELECT e FROM Employee e WHERE e.city = :city")
-    , @NamedQuery(name = "Employee.findByState", query = "SELECT e FROM Employee e WHERE e.state = :state")
-    , @NamedQuery(name = "Employee.findByPincode", query = "SELECT e FROM Employee e WHERE e.pincode = :pincode")
-    , @NamedQuery(name = "Employee.findByCountry", query = "SELECT e FROM Employee e WHERE e.country = :country")
-    , @NamedQuery(name = "Employee.findByEmailid", query = "SELECT e FROM Employee e WHERE e.emailid = :emailid")
-    , @NamedQuery(name = "Employee.findByContactno", query = "SELECT e FROM Employee e WHERE e.contactno = :contactno")
-    , @NamedQuery(name = "Employee.findByDateofbirth", query = "SELECT e FROM Employee e WHERE e.dateofbirth = :dateofbirth")
-    , @NamedQuery(name = "Employee.findByDesignation", query = "SELECT e FROM Employee e WHERE e.designation = :designation")
-    , @NamedQuery(name = "Employee.findByDateofjoining", query = "SELECT e FROM Employee e WHERE e.dateofjoining = :dateofjoining")
-    , @NamedQuery(name = "Employee.findByYearsofexperience", query = "SELECT e FROM Employee e WHERE e.yearsofexperience = :yearsofexperience")
-    , @NamedQuery(name = "Employee.findByReportingmanagerId", query = "SELECT e FROM Employee e WHERE e.reportingmanagerId = :reportingmanagerId")})*/
-public class Employee implements Serializable {
+@NamedNativeQueries({
+    @NamedNativeQuery(
+            name = "insertEmployee", query = "call CREATEUSER(:firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId)"
+    )
+})
+public class EmployeeResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EMPLOYEEID")
     private Integer employeeId;
-    @Size(max = 50)
     @Column(name = "FIRSTNAME")
     private String firstName;
-    @Size(max = 50)
     @Column(name = "LASTNAME")
     private String lastName;
-    @Size(max = 50)
     @Column(name = "USERNAME")
     private String userName;
-    @Size(max = 50)
     @Column(name = "PASSWORD")
     private String password;
-    @Size(max = 100)
     @Column(name = "STREET")
     private String street;
-    @Size(max = 50)
     @Column(name = "CITY")
     private String city;
-    @Size(max = 50)
     @Column(name = "STATE")
     private String state;
-    @Size(max = 10)
     @Column(name = "PINCODE")
     private String pincode;
-    @Size(max = 50)
     @Column(name = "COUNTRY")
     private String country;
-    @Size(max = 100)
     @Column(name = "EMAILID")
     private String emailId;
-    @Size(max = 12)
     @Column(name = "CONTACTNO")
     private String contactNo;
-    @Size(max = 20)
     @Column(name = "DATEOFBIRTH")
     private String dateOfBirth;
-    @Size(max = 50)
     @Column(name = "DESIGNATION")
     private String designation;
-    @Size(max = 20)
     @Column(name = "DATEOFJOINING")
     private String dateOfJoining;
     @Column(name = "YEARSOFEXPERIENCE")
     private Integer yearsOfExperience;
     @Column(name = "REPORTINGMANAGER_ID")
     private Integer reportingManagerId;
-    @OneToMany(mappedBy = "employeeId")
-    private Collection<ProjectDetails> projectDetailsCollection;
+    @Column(name = "CASUAL_LEAVES")
+    private float casualLeaves;
+    @Column(name = "EARNED_LEAVES")
+    private Integer earnedLeaves;
+    @Column(name = "SICK_LEAVES")
+    private Integer sickLeaves;
+    @Column(name = "COMP_OFFS")
+    private Integer compOffs;
+    @Column(name = "SHARED_LEAVES")
+    private Integer sharedLeaves;
 
-    public Employee() {
+    public EmployeeResponse() {
     }
 
-    public Employee(Integer employeeId) {
+    public EmployeeResponse(Integer employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -242,13 +221,44 @@ public class Employee implements Serializable {
         this.reportingManagerId = reportingManagerId;
     }
 
-    @XmlTransient
-    public Collection<ProjectDetails> getProjectDetailsCollection() {
-        return projectDetailsCollection;
+    public float getCasualLeaves() {
+        return casualLeaves;
     }
 
-    public void setProjectDetailsCollection(Collection<ProjectDetails> projectDetailsCollection) {
-        this.projectDetailsCollection = projectDetailsCollection;
+    public void setCasualLeaves(float casualLeaves) {
+        this.casualLeaves = casualLeaves;
+    }
+
+    public Integer getEarnedLeaves() {
+        return earnedLeaves;
+    }
+
+    public void setEarnedLeaves(Integer earnedLeaves) {
+        this.earnedLeaves = earnedLeaves;
+    }
+
+    public Integer getSickLeaves() {
+        return sickLeaves;
+    }
+
+    public void setSickLeaves(Integer sickLeaves) {
+        this.sickLeaves = sickLeaves;
+    }
+
+    public Integer getCompOffs() {
+        return compOffs;
+    }
+
+    public void setCompOffs(Integer compOffs) {
+        this.compOffs = compOffs;
+    }
+
+    public Integer getSharedLeaves() {
+        return sharedLeaves;
+    }
+
+    public void setSharedLeaves(Integer sharedLeaves) {
+        this.sharedLeaves = sharedLeaves;
     }
 
     @Override
@@ -261,10 +271,10 @@ public class Employee implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Employee)) {
+        if (!(object instanceof EmployeeResponse)) {
             return false;
         }
-        Employee other = (Employee) object;
+        EmployeeResponse other = (EmployeeResponse) object;
         if ((this.employeeId == null && other.employeeId != null) || (this.employeeId != null && !this.employeeId.equals(other.employeeId))) {
             return false;
         }
@@ -273,7 +283,7 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        return "com.teksystems.model.Employee[ employeeid=" + employeeId + " ]";
+        return "in.tekathon.samplepages.model.Employee[ employeeid=" + employeeId + " ]";
     }
 
 }

@@ -21,4 +21,5 @@ public class URIConstants {
     public static final String RESET_PASSWORD = "/resetPassword ";
     public static final String LOGIN = "/login ";
 
+    public static final String APPLY_LEAVES = "/applyLeave";
 }

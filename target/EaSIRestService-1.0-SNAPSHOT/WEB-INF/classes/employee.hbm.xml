@@ -40,29 +40,29 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-    <class name="in.tekathon.model.Employee" table="EMPLOYEE">
-        <id name="EmployeeId" column="employeeId" type="integer"/>
-        <property name="FirstName" column="FIRSTNAME" type="string"/>
-        <property name="LastName" column="LASTNAME" type="string"/>
-        <property name="UserName" column="USERNAME" type="string"/>
-        <property name="Password" column="PASSWORD" type="string"/>
-        <property name="Street" column="STREET" type="string"/>
-        <property name="City" column="CITY" type="string"/>
-        <property name="State" column="STATE" type="string"/>
-        <property name="Pincode" column="PINCODE" type="string"/>
-        <property name="Country" column="COUNTRY" type="string"/>
-        <property name="EmailId" column="EMAILID" type="string"/>
-        <property name="ContactNo" column="CONTACTNO" type="string"/>
-        <property name="DateOfBirth" column="DATEOFBIRTH" type="string"/>
-        <property name="Designation" column="DESIGNATION" type="string"/>
-        <property name="DateOfJoining" column="DATEOFJOINING" type="string"/>
-        <property name="YearsOfExperience" column="YEARSOFEXPERIENCE" type="int"/>
-        <property name="ReportingManagerId" column="REPORTINGMANAGER_ID" type="int"/>
+    <class name="in.tekathon.model.EmployeeResponse" table="EMPLOYEE">
+        <id column="employeeId" name="EmployeeId" type="integer"/>
+        <property column="FIRSTNAME" name="FirstName" type="string"/>
+        <property column="LASTNAME" name="LastName" type="string"/>
+        <property column="USERNAME" name="UserName" type="string"/>
+        <property column="PASSWORD" name="Password" type="string"/>
+        <property column="STREET" name="Street" type="string"/>
+        <property column="CITY" name="City" type="string"/>
+        <property column="STATE" name="State" type="string"/>
+        <property column="PINCODE" name="Pincode" type="string"/>
+        <property column="COUNTRY" name="Country" type="string"/>
+        <property column="EMAILID" name="EmailId" type="string"/>
+        <property column="CONTACTNO" name="ContactNo" type="string"/>
+        <property column="DATEOFBIRTH" name="DateOfBirth" type="string"/>
+        <property column="DESIGNATION" name="Designation" type="string"/>
+        <property column="DATEOFJOINING" name="DateOfJoining" type="string"/>
+        <property column="YEARSOFEXPERIENCE" name="YearsOfExperience" type="int"/>
+        <property column="REPORTINGMANAGER_ID" name="ReportingManagerId" type="int"/>
+        <property column="CASUAL_LEAVES" name="CasualLeaves" type="float"/>
+        <property column="EARNED_LEAVES" name="EarnedLeaves" type="int"/>
+        <property column="SICK_LEAVES" name="SickLeaves" type="int"/>
+        <property column="COMP_OFFS" name="CompOffs" type="int"/>
+        <property column="SHARED_LEAVES" name="SharedLeaves" type="int"/>    
+
     </class>
-    
-    <!--    <query name="get.By.Id" cacheable="true">
-        select ProductFlsko
-        from edu.byu.training.domain.ProductFlsko prod
-        where prod.productId = :id
-    </query>-->
 </hibernate-mapping>
