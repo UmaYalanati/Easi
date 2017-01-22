@@ -5,6 +5,8 @@
  */
 package in.tekathon.service;
 
+import in.tekathon.model.Employee;
+
 /**
  *
  * @author administrator
@@ -15,7 +17,7 @@ public class LoginImpl implements LoginIntf{
     @Override
     public void login(int employeeId, String userName, String password) {
         
-//        EmployeeRequest employee = employeeDao.getEmployeeById(employeeId);
+        Employee employee = employeeDao.getEmployeeById(employeeId);
     }
     
      /*public String authenticateUser(int employeeId, String password) {

@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,6 +26,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "PROJECT_DETAILS")
 @XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "ProjectDetails.findAll", query = "SELECT p FROM ProjectDetails p")
+    , @NamedQuery(name = "ProjectDetails.findByProjectid", query = "SELECT p FROM ProjectDetails p WHERE p.projectid = :projectid")
+    , @NamedQuery(name = "ProjectDetails.findByProjectname", query = "SELECT p FROM ProjectDetails p WHERE p.projectname = :projectname")
+    , @NamedQuery(name = "ProjectDetails.findByRole", query = "SELECT p FROM ProjectDetails p WHERE p.role = :role")
+    , @NamedQuery(name = "ProjectDetails.findByProjectlocation", query = "SELECT p FROM ProjectDetails p WHERE p.projectlocation = :projectlocation")
+    , @NamedQuery(name = "ProjectDetails.findByProjectmanagerid", query = "SELECT p FROM ProjectDetails p WHERE p.projectmanagerid = :projectmanagerid")
+    , @NamedQuery(name = "ProjectDetails.findByDeliverymanagerid", query = "SELECT p FROM ProjectDetails p WHERE p.deliverymanagerid = :deliverymanagerid")})
 public class ProjectDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +59,7 @@ public class ProjectDetails implements Serializable {
     private String deliverymanagerid;
     @JoinColumn(name = "EMPLOYEEID", referencedColumnName = "EMPLOYEEID")
     @ManyToOne
-    private EmployeeRequest employeeid;
+    private Employee employeeid;
 
     public ProjectDetails() {
     }
@@ -106,11 +116,11 @@ public class ProjectDetails implements Serializable {
         this.deliverymanagerid = deliverymanagerid;
     }
 
-    public EmployeeRequest getEmployeeid() {
+    public Employee getEmployeeid() {
         return employeeid;
     }
 
-    public void setEmployeeid(EmployeeRequest employeeid) {
+    public void setEmployeeid(Employee employeeid) {
         this.employeeid = employeeid;
     }
 

@@ -9,40 +9,22 @@ and open the template in the editor.
     <controller name="EmployeeController">
         <query name="getAllEmployees">
             <sql>
-	    <![CDATA[SELECT e FROM EmployeeResponse e]]>
+	    <![CDATA[from Employee e]]>
             </sql>
         </query>
         <query name="getEmployeeById">
             <sql>
-	    <![CDATA[SELECT e FROM EmployeeResponse e WHERE employeeid = :employeeid]]>
+	    <![CDATA[SELECT e FROM Employee e WHERE employeeid = :employeeid]]>
             </sql>
         </query>
         <query name="deleteEmployeeById">
             <sql>
-	    <![CDATA[DELETE FROM EmployeeResponse e WHERE employeeid = :employeeid]]>
-            </sql>
-        </query>
-        <query name="insertEmployee">
-            <sql>
-	    <![CDATA[call CREATEUSER(:firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId)]]>
+	    <![CDATA[DELETE FROM Employee e WHERE employeeid = :employeeid]]>
             </sql>
         </query>
         <query name="updateEmployee">
             <sql>
-	    <![CDATA[UPDATE EmployeeResponse e set firstName=:firstName, lastName=:lastName, userName=:userName, password=:password, street=:street, city=:city, state=:state, pincode=:pincode, country=:country, emailId=:emailId, contactNo=:contactNo, dateOfBirth=:dateOfBirth, designation=:designation, dateOfJoining=:dateOfJoining, yearsOfExperience=:yearsOfExperience, reportingManagerId=:reportingManagerId WHERE id=:id]]>
-            </sql>
-        </query>
-        <query name="applyLeaves">
-            <sql>
-	    <![CDATA[INSERT INTO LEAVE_DETAILS (EMPLOYEEID, ABSENCE_CATEGORY, START_DATE, END_DATE, NO_OF_DAYS, LEAVE_REASON, COMMENTS) VALUES (:employeeId, :absenceCategory,:startDate,:endDate,:noOfDays,:leaveReason,:comments)]]>
-            </sql>
-        </query>
-    </controller>
-    
-    <controller name="TimeAndExpenseController">
-        <query name="applyLeaves">
-            <sql>
-	    <![CDATA[UPDATE LEAVE_DETAILS l set absenceCategory = :absenceCategory,startDate = :startDate,endDate = :endDate,leaveReason = :leaveReason,comments=:comments WHERE id = :id>
+	    <![CDATA[UPDATE Employee e set firstName=:firstName,lastName=:lastName,userName=:userName,password=:password,street=:street,city=:city,state=:state,pinCode=:pinCode,country=:country,emailId=:emailId,contactNo=:contactNo,dateOfBirth=:dateOfBirth,designation=:designation,dateOfJoining=:dateOfJoining,yearsOfExperience=:yearsOfExperience, reportingManager_Id=:reportingManager_Id WHERE employeeid = :employeeid]]>
             </sql>
         </query>
     </controller>

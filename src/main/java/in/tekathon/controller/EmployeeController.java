@@ -6,8 +6,7 @@
 package in.tekathon.controller;
 
 import in.tekathon.common.URIConstants;
-import in.tekathon.model.EmployeeRequest;
-import in.tekathon.model.EmployeeResponse;
+import in.tekathon.model.Employee;
 import in.tekathon.service.EmployeeImpl;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -34,33 +33,30 @@ public class EmployeeController {
     @GET
     @Produces("application/json")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<EmployeeResponse> getAllEmployees() {
+    public List<Employee> getAllEmployees() {
 
-        List<EmployeeResponse> employees = employeeDao.getAllEmployees();
-        
+        List<Employee> employees = employeeDao.getAllEmployees();
         return employees;
     }
 
     @GET
     @Path(URIConstants.GET_EMP_BY_ID)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployeeById(@PathParam("id") int id) {
-        EmployeeResponse employees = employeeDao.getEmployeeById(id);
-        if(employees == null)
-        {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(employees).build();
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Employee getEmployeeById(@PathParam("employeeId") int id) {
+        System.out.println("id :"+id);
+        Employee employees = employeeDao.getEmployeeById(id);
+        return employees;
     }
 
     @POST
     @Path(URIConstants.CREATE_EMP)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createEmployee(EmployeeRequest employee) {
-        System.out.println("Inside employee");
-        int result = employeeDao.insertEmployee(employee);
-        if (result == 0) {
+    public Response createEmployee(Employee employee) {
+
+        String result = employeeDao.insertEmployee(employee);
+        if (result == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok("{\"Status\": \"Success\"}").build();
@@ -70,19 +66,20 @@ public class EmployeeController {
     @Path(URIConstants.UPDATE_EMP)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateEmployee(@PathParam("id") int id, EmployeeRequest employee) {
+    public Response updateEmployee(@PathParam("employeeId") int id, Employee employee) {
 
-        EmployeeResponse response = employeeDao.updateEmployee(id, employee);
-        if (response == null) {
+        int count = employeeDao.updateEmployee(id, employee);
+        if (count == 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.ok(response).build();
+        return Response.ok("{\"Status\": \"Success\"}").build();
     }
 
     @GET
     @Path(URIConstants.DELETE_EMP)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEmployee(@PathParam("id") int id) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteEmployee(@PathParam("employeeId") int id) {
 
         int count = employeeDao.deleteEmployee(id);
         if (count == 0) {
