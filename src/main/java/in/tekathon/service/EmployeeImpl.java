@@ -84,6 +84,7 @@ public class EmployeeImpl implements EmployeeIntf {
             transaction = session.beginTransaction();
 //            String insertEmployee = "CALL CREATEUSER(:firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId)";
             Query query = session.getNamedQuery("createEmployeeProcedure");
+            query.setParameter("employeeId", employee.getEmployeeId());
             query.setParameter("firstName", employee.getFirstName());
             query.setParameter("lastName", employee.getLastName());
             query.setParameter("street", employee.getStreet());
@@ -122,21 +123,23 @@ public class EmployeeImpl implements EmployeeIntf {
             transaction = session.beginTransaction();
 
             EmployeeResponse employeeResponse = (EmployeeResponse) session.get(EmployeeResponse.class, employeeId);
-            employeeResponse.setFirstName(employee.getFirstName());
-            employeeResponse.setLastName(employee.getLastName());
-            employeeResponse.setStreet(employee.getStreet());
-            employeeResponse.setCity(employee.getCity());
-            employeeResponse.setState(employee.getState());
-            employeeResponse.setPincode(employee.getPincode());
-            employeeResponse.setCountry(employee.getCountry());
-            employeeResponse.setContactNo(employee.getContactNo());
-            employeeResponse.setDateOfBirth(employee.getDateOfBirth());
-            employeeResponse.setDesignation(employee.getDesignation());
-            employeeResponse.setDateOfJoining(employee.getDateOfJoining());
-            employeeResponse.setYearsOfExperience(employee.getYearsOfExperience());
-            employeeResponse.setReportingManagerId(employee.getReportingManagerId());
-            employeeResponse.setCompanyName(employee.getCompanyName());
-            employeeResponse.setDeviceId(employee.getDeviceId());
+
+            employeeResponse.setFirstName(employee.getFirstName() == null ? employeeResponse.getFirstName() : employee.getFirstName());
+            employeeResponse.setLastName(employee.getLastName() == null ? employeeResponse.getLastName() : employee.getLastName());
+            employeeResponse.setPassword(employee.getPassword() == null ? employeeResponse.getPassword() : employee.getPassword());
+            employeeResponse.setStreet(employee.getStreet() == null ? employeeResponse.getStreet(): employee.getStreet());
+            employeeResponse.setCity(employee.getCity() == null ? employeeResponse.getCity() : employee.getCity());
+            employeeResponse.setState(employee.getState() == null ? employeeResponse.getState() : employee.getState());
+            employeeResponse.setPincode(employee.getPincode() == null ? employeeResponse.getPincode() : employee.getPincode());
+            employeeResponse.setCountry(employee.getCountry() == null ? employeeResponse.getCountry() : employee.getCountry());
+            employeeResponse.setContactNo(employee.getContactNo() == null ? employeeResponse.getContactNo() : employee.getContactNo());
+            employeeResponse.setDateOfBirth(employee.getDateOfBirth() == null ? employeeResponse.getDateOfBirth() : employee.getDateOfBirth());
+            employeeResponse.setDesignation(employee.getDesignation() == null ? employeeResponse.getDesignation() : employee.getDesignation());
+            employeeResponse.setDateOfJoining(employee.getDateOfJoining() == null ? employeeResponse.getDateOfJoining() : employee.getDateOfJoining());
+            employeeResponse.setYearsOfExperience(employee.getYearsOfExperience() == 0 ? employeeResponse.getYearsOfExperience() : employee.getYearsOfExperience());
+            employeeResponse.setReportingManagerId(employee.getReportingManagerId() == 0 ? employeeResponse.getReportingManagerId() : employee.getReportingManagerId());
+            employeeResponse.setCompanyName(employee.getCompanyName() == null ? employeeResponse.getCompanyName() : employee.getCompanyName());
+            employeeResponse.setDeviceId(employee.getDeviceId() == null ? employeeResponse.getDeviceId() : employee.getDeviceId());
 
             transaction.commit();
             return employeeResponse;
@@ -220,10 +223,10 @@ public class EmployeeImpl implements EmployeeIntf {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            String findByEmployeeid = "SELECT e FROM EmployeeResponse e WHERE reportingManagerId = :reportingManagerId";
+            String findByEmployeeid = "SELECT e FROM EmployeeResponse e WHERE reportingManager_Id = :reportingManagerId";
             Query query = session.createQuery(findByEmployeeid, EmployeeResponse.class);
             query.setParameter("reportingManagerId", employeeId);
-            
+
             List<EmployeeResponse> employeeList = query.list();
 //            EmployeeResponse employee = (EmployeeResponse) query.uniqueResult();
             transaction.commit();
@@ -238,5 +241,5 @@ public class EmployeeImpl implements EmployeeIntf {
         }
         return null;
     }
-    
+
 }

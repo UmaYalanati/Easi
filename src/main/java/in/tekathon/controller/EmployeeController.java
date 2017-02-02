@@ -89,13 +89,12 @@ public class EmployeeController {
         }
         return Response.ok("{\"Status\": \"Success\"}").build();
     }
-    
-    
+
     @GET
     @Path(URIConstants.GET_CHILDEMP_BY_ID)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChildEmployeeById(@PathParam("employeeId") int employeeId) {
-        EmployeeResponse employees = employeeDao.getEmployeeById(employeeId);
+        List<EmployeeResponse> employees = employeeDao.getChildEmployeeById(employeeId);
         if (employees == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

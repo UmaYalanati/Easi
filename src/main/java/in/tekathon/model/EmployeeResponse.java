@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "EMPLOYEE")
 @XmlRootElement
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "createEmployeeProcedure", query = "CALL CREATEUSER(:firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId, :companyName, :deviceId)", resultClass = EmployeeResponse.class)
+    @NamedNativeQuery(name = "createEmployeeProcedure", query = "CALL CREATEUSER(:employeeId, :firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId, :companyName, :deviceId)", resultClass = EmployeeResponse.class)
 })
 public class EmployeeResponse implements java.io.Serializable {
 

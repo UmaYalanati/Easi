@@ -18,8 +18,10 @@ public class EmployeeRequest {
 
     private static final long serialVersionUID = 1L;
 
+    private String employeeId;
     private String firstName;
     private String lastName;
+    private String password;
     private String street;
     private String city;
     private String state;
@@ -33,6 +35,16 @@ public class EmployeeRequest {
     private int reportingManagerId;
     private String companyName;
     private String deviceId;
+    
+    
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -152,6 +164,14 @@ public class EmployeeRequest {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
