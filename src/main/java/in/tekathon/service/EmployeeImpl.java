@@ -6,10 +6,9 @@
 package in.tekathon.service;
 
 import in.tekathon.connection.HibernateUtil;
-import in.tekathon.model.Employee;
-import in.tekathon.query.QueryManager;
+import in.tekathon.model.EmployeeRequest;
+import in.tekathon.model.EmployeeResponse;
 import java.util.List;
-import javax.xml.bind.JAXBException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -24,25 +23,31 @@ import org.slf4j.LoggerFactory;
 public class EmployeeImpl implements EmployeeIntf {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    QueryManager queryManager = new QueryManager();
-    Session session = HibernateUtil.getSessionFactory().openSession();
+
     Transaction transaction = null;
 
     @Override
-    public List<Employee> getAllEmployees() {
-
+    public List<EmployeeResponse> getAllEmployees() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            String sql = queryManager.getQuery("EmployeeController", "getAllEmployees");
-            Query query = session.createQuery(sql);
-            List<Employee> employeeList = query.list();
+//            String sql = queryManager.getQuery("EmployeeController", "getAllEmployees");
+            String findAll = "FROM EmployeeResponse";
+            Query query = session.createQuery(findAll, EmployeeResponse.class);
+            System.out.println("Hello");
+            List<EmployeeResponse> employeeList = query.getResultList();
+            System.out.println("Hello1");
+            for (int i = 0; i < employeeList.size(); i++) {
+                EmployeeResponse employee = employeeList.get(i);
+                System.out.println("Enter" + employee.getEmployeeId());
+            }
 
             transaction.commit();
             return employeeList;
         } catch (HibernateException ex) {
             transaction.rollback();
             logger.error("Exception :" + ex);
-        } catch (JAXBException ex) {
+        } catch (Exception ex) {
             logger.error("Exception :" + ex);
         } finally {
             session.close();
@@ -51,24 +56,20 @@ public class EmployeeImpl implements EmployeeIntf {
     }
 
     @Override
-    public Employee getEmployeeById(int employeeId) {
+    public EmployeeResponse getEmployeeById(int employeeId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            if (employeeId <= 0) {
-                return new Employee();
-            }
             transaction = session.beginTransaction();
-            String sql = queryManager.getQuery("EmployeeController", "getEmployeeById");
-            Query query = session.createQuery(sql);
-            query.setParameter("employeeid", employeeId);
-            System.out.println("" + employeeId);
-            Employee employee = (Employee) query.uniqueResult();
-
+            String findByEmployeeid = "SELECT e FROM EmployeeResponse e WHERE employeeId = :employeeId";
+            Query query = session.createQuery(findByEmployeeid, EmployeeResponse.class);
+            query.setParameter("employeeId", employeeId);
+            EmployeeResponse employee = (EmployeeResponse) query.uniqueResult();
             transaction.commit();
             return employee;
         } catch (HibernateException ex) {
             transaction.rollback();
             logger.error("Exception :" + ex);
-        } catch (JAXBException ex) {
+        } catch (Exception ex) {
             logger.error("Exception :" + ex);
         } finally {
             session.close();
@@ -77,15 +78,35 @@ public class EmployeeImpl implements EmployeeIntf {
     }
 
     @Override
-    public String insertEmployee(Employee employee) {
+    public List<EmployeeResponse> insertEmployee(EmployeeRequest employee) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            generateUserNameandEmailId(employee);
-            session.save(employee);
+//            String insertEmployee = "CALL CREATEUSER(:firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId)";
+            Query query = session.getNamedQuery("createEmployeeProcedure");
+            query.setParameter("firstName", employee.getFirstName());
+            query.setParameter("lastName", employee.getLastName());
+            query.setParameter("street", employee.getStreet());
+            query.setParameter("city", employee.getCity());
+            query.setParameter("state", employee.getState());
+            query.setParameter("pincode", employee.getPincode());
+            query.setParameter("country", employee.getCountry());
+            query.setParameter("contactNo", employee.getContactNo());
+            query.setParameter("dateOfBirth", employee.getDateOfBirth());
+            query.setParameter("designation", employee.getDesignation());
+            query.setParameter("dateOfJoining", employee.getDateOfJoining());
+            query.setParameter("yearsOfExperience", employee.getYearsOfExperience());
+            query.setParameter("reportingManagerId", employee.getReportingManagerId());
+            query.setParameter("companyName", employee.getCompanyName());
+            query.setParameter("deviceId", employee.getDeviceId());
+
+            List<EmployeeResponse> result = query.list();;
             transaction.commit();
-            return "Success";
+            return result;
         } catch (HibernateException ex) {
             transaction.rollback();
+            logger.error("Exception :" + ex);
+        } catch (Exception ex) {
             logger.error("Exception :" + ex);
         } finally {
             session.close();
@@ -94,63 +115,50 @@ public class EmployeeImpl implements EmployeeIntf {
     }
 
     @Override
-    public int updateEmployee(int id, Employee emp) {
+    public EmployeeResponse updateEmployee(int employeeId, EmployeeRequest employee) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
 
             transaction = session.beginTransaction();
-            String sql = queryManager.getQuery("EmployeeController", "updateEmployee");
-            Query query = session.createQuery(sql);
-            query.setParameter("employeeid", emp.getEmployeeId());
-            query.setParameter("firstName", emp.getFirstName());
-            query.setParameter("lastName", emp.getLastName());
-            query.setParameter("userName", emp.getUserName());
-            query.setParameter("password", emp.getPassword());
-            query.setParameter("street", emp.getStreet());
-            query.setParameter("city", emp.getCity());
-            query.setParameter("state", emp.getState());
-            query.setParameter("pinCode", emp.getPincode());
-            query.setParameter("country", emp.getCountry());
-            query.setParameter("emailId", emp.getEmailId());
-            query.setParameter("contactNo", emp.getContactNo());
-            query.setParameter("dateOfBirth", emp.getDateOfBirth());
-            query.setParameter("designation", emp.getDesignation());
-            query.setParameter("dateOfJoining", emp.getDateOfJoining());
-            query.setParameter("yearsOfExperience", emp.getYearsOfExperience());
-            query.setParameter("reportingManager_Id", emp.getReportingManagerId());
-            int rowCount = query.executeUpdate();
+
+            EmployeeResponse employeeResponse = (EmployeeResponse) session.get(EmployeeResponse.class, employeeId);
+            employeeResponse.setFirstName(employee.getFirstName());
+            employeeResponse.setLastName(employee.getLastName());
+            employeeResponse.setStreet(employee.getStreet());
+            employeeResponse.setCity(employee.getCity());
+            employeeResponse.setState(employee.getState());
+            employeeResponse.setPincode(employee.getPincode());
+            employeeResponse.setCountry(employee.getCountry());
+            employeeResponse.setContactNo(employee.getContactNo());
+            employeeResponse.setDateOfBirth(employee.getDateOfBirth());
+            employeeResponse.setDesignation(employee.getDesignation());
+            employeeResponse.setDateOfJoining(employee.getDateOfJoining());
+            employeeResponse.setYearsOfExperience(employee.getYearsOfExperience());
+            employeeResponse.setReportingManagerId(employee.getReportingManagerId());
+            employeeResponse.setCompanyName(employee.getCompanyName());
+            employeeResponse.setDeviceId(employee.getDeviceId());
 
             transaction.commit();
-            return rowCount;
+            return employeeResponse;
         } catch (HibernateException ex) {
             transaction.rollback();
             logger.error("Exception :" + ex);
-        } catch (JAXBException ex) {
+        } catch (Exception ex) {
             logger.error("Exception :" + ex);
         } finally {
             session.close();
         }
 
-//        String hql = "update Employee set name = :name, age=:age where id = :id";
-//        Query query = session.createQuery(updateEmployee);
-//        query.setInteger("id", id);
-//        query.setString("name", emp.getName());
-//        query.setInteger("age", emp.getAge());
-//        int rowCount = query.executeUpdate();
-//        
-        return 0;
+        return null;
     }
 
     @Override
     public int deleteEmployee(int employeeId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            /*String sql = queryManager.getQuery("EmployeeController", "deleteEmployeeById");
-            Query query = session.createQuery(sql);
-            query.setParameter("employeeid", 2062);
-            int rowCount = query.executeUpdate();
-            System.out.println("Rows affected: " + rowCount);*/
 
-            Employee employee = (Employee) session.get(Employee.class, employeeId);
+            EmployeeResponse employee = (EmployeeResponse) session.get(EmployeeResponse.class, employeeId);
             session.delete(employee);
             transaction.commit();
             return 1;
@@ -168,7 +176,7 @@ public class EmployeeImpl implements EmployeeIntf {
      *
      * @param employee
      */
-    private void generateUserNameandEmailId(Employee employee) {
+    /*private void generateUserNameandEmailId(EmployeeRequest employee) {
         String fName = employee.getFirstName();
         String lName = employee.getLastName();
         String uName;
@@ -181,5 +189,54 @@ public class EmployeeImpl implements EmployeeIntf {
         employee.setUserName(uName.toLowerCase().trim());
         employee.setEmailId(uName.toLowerCase().trim() + "@teksystems.com");
     }
+     */
+ /*public void automaticAllowLeaves() {
+        try {
+            transaction = session.beginTransaction();
 
+            //Add new Employee object
+            LeaveApplication leaves = new LeaveApplication();
+            leaves.set
+            //Save the employee in database
+            session.save(emp);
+
+            //Commit the transaction
+            session.getTransaction().commit();
+            HibernateUtil.shutdown();
+            session.save(employee);
+            transaction.commit();
+            return "Success";
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            logger.error("Exception :" + ex);
+        } finally {
+            session.close();
+        }
+        return null;
+
+    }*/
+    @Override
+    public List<EmployeeResponse> getChildEmployeeById(int employeeId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
+            String findByEmployeeid = "SELECT e FROM EmployeeResponse e WHERE reportingManagerId = :reportingManagerId";
+            Query query = session.createQuery(findByEmployeeid, EmployeeResponse.class);
+            query.setParameter("reportingManagerId", employeeId);
+            
+            List<EmployeeResponse> employeeList = query.list();
+//            EmployeeResponse employee = (EmployeeResponse) query.uniqueResult();
+            transaction.commit();
+            return employeeList;
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            logger.error("Exception :" + ex);
+        } catch (Exception ex) {
+            logger.error("Exception :" + ex);
+        } finally {
+            session.close();
+        }
+        return null;
+    }
+    
 }

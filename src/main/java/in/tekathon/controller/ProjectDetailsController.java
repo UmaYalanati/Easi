@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package in.tekathon.service;
+package in.tekathon.controller;
 
-import in.tekathon.model.EmployeeResponse;
-
+import javax.ws.rs.Path;
 
 /**
  *
  * @author administrator
  */
-public interface LoginIntf {
-
-    public EmployeeResponse login(int userName, String password);
+@Path("")
+public class ProjectDetailsController {
 
 }

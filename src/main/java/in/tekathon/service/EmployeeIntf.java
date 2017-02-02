@@ -5,7 +5,8 @@
  */
 package in.tekathon.service;
 
-import in.tekathon.model.Employee;
+import in.tekathon.model.EmployeeRequest;
+import in.tekathon.model.EmployeeResponse;
 import java.util.List;
 
 /**
@@ -14,13 +15,15 @@ import java.util.List;
  */
 public interface EmployeeIntf {
 
-    public List<Employee> getAllEmployees();
+    public List<EmployeeResponse> getAllEmployees();
 
-    public Employee getEmployeeById(int employeeId);
+    public EmployeeResponse getEmployeeById(int employeeId);
 
-    public String insertEmployee(Employee e);
+    public List<EmployeeResponse> insertEmployee(EmployeeRequest e);
 
-    public int updateEmployee(int id, Employee e);
+    public EmployeeResponse updateEmployee(int employeeId, EmployeeRequest e);
 
     public int deleteEmployee(int employeeId);
+
+    public List<EmployeeResponse> getChildEmployeeById(int employeeId);
 }

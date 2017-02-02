@@ -5,28 +5,39 @@
  */
 package in.tekathon.service;
 
-import in.tekathon.model.Employee;
+import in.tekathon.model.EmployeeResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author administrator
  */
-public class LoginImpl implements LoginIntf{
+public class LoginImpl implements LoginIntf {
 
-      EmployeeImpl employeeDao = new EmployeeImpl();
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    EmployeeImpl employeeDao = new EmployeeImpl();
+
     @Override
-    public void login(int employeeId, String userName, String password) {
-        
-        Employee employee = employeeDao.getEmployeeById(employeeId);
-    }
-    
-     /*public String authenticateUser(int employeeId, String password) {
-//        Employee employee = employeeDao.getEmployeeById(employeeId);
-        if (employee != null && employee.getEmployeeId().equals(employeeId) && employee.getPassword().equals(password)) {
-            return "{\"Status\": \"Success\"}";
-        } else {
-            return "{\"Status\": \"Failure\"}";
+    public EmployeeResponse login(int userName, String password) {
+
+        EmployeeResponse employee = employeeDao.getEmployeeById(userName);
+
+        if (employee != null) {
+            if (validateEmployee(userName, password, employee)) {
+                return employee;
+            }
         }
-    }*/
-    
+        return null;
+    }
+
+    public boolean validateEmployee(int userName, String password, EmployeeResponse employee) {
+        if (employee.getEmployeeId().equals(userName)) {
+            if (employee.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

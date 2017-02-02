@@ -12,13 +12,23 @@ package in.tekathon.common;
 public class URIConstants {
 
 //    Employee Controller
-    public static final String GET_EMP_BY_ID = "/{id}";
+    public static final String EMPLOYEECONTROLLER = "/employees";
+    public static final String GET_EMP_BY_ID = "/{employeeId}";
     public static final String CREATE_EMP = "/create";
-    public static final String UPDATE_EMP = "/update/{id}";
-    public static final String DELETE_EMP = "/delete/{id}";
+    public static final String UPDATE_EMP = "/update/{employeeId}";
+    public static final String DELETE_EMP = "/delete/{employeeId}";
+    public static final String GET_CHILDEMP_BY_ID = "/reportes/{employeeId}";
 
 //    Login Controller
+    public static final String LOGINCONTROLLER = "/teksystems";
     public static final String RESET_PASSWORD = "/resetPassword ";
-    public static final String LOGIN = "/login ";
+    public static final String LOGIN = "/login";
 
+//    Time And Expense Controller
+    public static final String TIMEANDEXPENSECONTROLLER = "/timeandexpense";
+    public static final String CHECKINTIMESHEET = "/checkinTimeSheet";
+    public static final String CHECKOUTTIMESHEET = "/checkoutTimeSheet";
+    public static final String GETTIMESHEETREPORT = "/getTimesheetReport";
+    public static final String GETTIMESHEETBYID = "/timesheetById";
+    public static final String APPLY_LEAVES = "/applyLeaves";
 }
