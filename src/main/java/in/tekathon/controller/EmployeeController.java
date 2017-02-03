@@ -58,8 +58,8 @@ public class EmployeeController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createEmployee(EmployeeRequest employee) {
         System.out.println("Inside employee");
-        List<EmployeeResponse> response = employeeDao.insertEmployee(employee);
-        if (response == null) {
+        int response = employeeDao.insertEmployee(employee);
+        if (response == 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok(response).build();

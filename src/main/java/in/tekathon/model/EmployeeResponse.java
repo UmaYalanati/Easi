@@ -1,38 +1,34 @@
 package in.tekathon.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "EMPLOYEE")
 @XmlRootElement
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "createEmployeeProcedure", query = "CALL CREATEUSER(:employeeId, :firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId, :companyName, :deviceId)", resultClass = EmployeeResponse.class)
+    @NamedNativeQuery(name = "createEmployeeProcedure", query = "CALL CREATEUSER(:employeeId, :firstName, :lastName, :street, :city, :state, :pincode, :country, :contactNo, :dateOfBirth, :designation, :dateOfJoining, :yearsOfExperience, :reportingManagerId, :reportingManagerName,:companyName, :deviceId)", resultClass = EmployeeResponse.class)
 })
 public class EmployeeResponse implements java.io.Serializable {
 
-    @OneToMany(mappedBy = "employeeId")
-    private Collection<ProjectDetailsResponse> projectDetailsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeId")
-    private Collection<TimeAndExpenseResponse> timeandexpenseCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "EMPLOYEEID")
     private Integer employeeId;
     @Size(max = 100)
@@ -64,7 +60,7 @@ public class EmployeeResponse implements java.io.Serializable {
     private String country;
     @Size(max = 100)
     @Column(name = "EMAILID")
-    private String emailid;
+    private String emailId;
     @Size(max = 12)
     @Column(name = "CONTACTNO")
     private String contactNo;
@@ -96,11 +92,19 @@ public class EmployeeResponse implements java.io.Serializable {
     @Column(name = "CREATED_DATE")
     private String createdDate;
     @Size(max = 100)
-    @Column(name = "companyName")
+    @Column(name = "COMPANYNAME")
     private String companyName;
     @Size(max = 100)
-    @Column(name = "deviceId")
+    @Column(name = "DEVICEID")
     private String deviceId;
+    @Size(max = 500)
+    @Column(name = "REPORTINGMANAGER_NAME")
+    private String reportingManagerName;
+//    @OneToMany(mappedBy = "employeeId")
+//    private Collection<ProjectDetailsResponse> projectDetailsCollection;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "employeeId")
+    @JsonManagedReference
+    private SkillsResponse skillsCollection;
 
     public EmployeeResponse() {
     }
@@ -189,12 +193,12 @@ public class EmployeeResponse implements java.io.Serializable {
         this.country = country;
     }
 
-    public String getEmailid() {
-        return emailid;
+    public String getEmailId() {
+        return emailId;
     }
 
-    public void setEmailid(String emailid) {
-        this.emailid = emailid;
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
     public String getContactNo() {
@@ -309,22 +313,27 @@ public class EmployeeResponse implements java.io.Serializable {
         this.deviceId = deviceId;
     }
 
-    @XmlTransient
-    public Collection<ProjectDetailsResponse> getProjectDetailsCollection() {
-        return projectDetailsCollection;
+    public String getReportingManagerName() {
+        return reportingManagerName;
     }
 
-    public void setProjectDetailsCollection(Collection<ProjectDetailsResponse> projectDetailsCollection) {
-        this.projectDetailsCollection = projectDetailsCollection;
+    public void setReportingManagerName(String reportingManagerName) {
+        this.reportingManagerName = reportingManagerName;
     }
 
-    @XmlTransient
-    public Collection<TimeAndExpenseResponse> getTimeandexpenseCollection() {
-        return timeandexpenseCollection;
+//    public Collection<ProjectDetailsResponse> getProjectDetailsCollection() {
+//        return projectDetailsCollection;
+//    }
+//
+//    public void setProjectDetailsCollection(Collection<ProjectDetailsResponse> projectDetailsCollection) {
+//        this.projectDetailsCollection = projectDetailsCollection;
+//    }
+    public SkillsResponse getSkillsCollection() {
+        return skillsCollection;
     }
 
-    public void setTimeandexpenseCollection(Collection<TimeAndExpenseResponse> timeandexpenseCollection) {
-        this.timeandexpenseCollection = timeandexpenseCollection;
+    public void setSkillsCollection(SkillsResponse skillsCollection) {
+        this.skillsCollection = skillsCollection;
     }
 
     @Override
@@ -349,7 +358,7 @@ public class EmployeeResponse implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "[ employeeid=" + employeeId + " ]";
+        return "[ employeeId=" + employeeId + " ]";
     }
 
 }

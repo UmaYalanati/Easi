@@ -58,13 +58,13 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
     }
 
     @Override
-    public List<TimeAndExpenseResponse> checkinTimeSheet(int employeeId, double latitude, double longitude, String comments, String attendanceMode) {
+    public TimeAndExpenseResponse checkTimeSheet(int id, double latitude, double longitude, String comments, String attendanceMode, int flag) {
         try {
             transaction = session.beginTransaction();
 
             Query query = session.getNamedQuery("fillTimeSheetProcedure");
 
-            query.setParameter("id", employeeId);
+            query.setParameter("id", id);
             query.setParameter("latitude", latitude);
             query.setParameter("longitude", latitude);
             query.setParameter("comments", comments);
@@ -73,11 +73,9 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
             query.setParameter("leaveReason", null);
             query.setParameter("insertDate", null);
             query.setParameter("endDate", null);
-            query.setParameter("statusFlag", 0);
-            
-            
+            query.setParameter("statusFlag", flag);
 
-            List<TimeAndExpenseResponse> resultList = query.list();
+            TimeAndExpenseResponse resultList = (TimeAndExpenseResponse) query.uniqueResult();
             transaction.commit();
             return resultList;
         } catch (HibernateException ex) {
@@ -90,7 +88,7 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
         return null;
     }
 
-    @Override
+    /*    @Override
     public List<TimeAndExpenseResponse> checkoutTimeSheet(int timesheetId, double latitude, double longitude, String comments, String attendanceMode) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -135,8 +133,7 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
         }
 
         return null;
-    }
-
+    }*/
     public List<TimeAndExpenseResponse> getTimesheetById(int employeeId, String fromDate, String toDate) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -161,6 +158,29 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
             session.close();
         }
         return null;
+    }
+
+    public List<TimeAndExpenseResponse> managerApproval(int employeeId, String startDate, String endDate, String status) {
+        try {
+            transaction = session.beginTransaction();
+
+            transaction = session.beginTransaction();
+
+            Query query = session.getNamedQuery("mannagerApprovalQuery");
+
+            query.setParameter("id", employeeId);
+            query.setParameter("insertDate", startDate);
+            query.setParameter("endDate", endDate);
+            query.setParameter("status", status);
+
+            List<TimeAndExpenseResponse> response = query.list();
+            transaction.commit();
+            return response;
+
+        } finally {
+            session.close();
+        }
+
     }
 
 }

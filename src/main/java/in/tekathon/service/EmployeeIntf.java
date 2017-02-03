@@ -19,7 +19,7 @@ public interface EmployeeIntf {
 
     public EmployeeResponse getEmployeeById(int employeeId);
 
-    public List<EmployeeResponse> insertEmployee(EmployeeRequest e);
+    public int insertEmployee(EmployeeRequest e);
 
     public EmployeeResponse updateEmployee(int employeeId, EmployeeRequest e);
 

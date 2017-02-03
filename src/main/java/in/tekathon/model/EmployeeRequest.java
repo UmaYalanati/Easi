@@ -33,10 +33,9 @@ public class EmployeeRequest {
     private String dateOfJoining;
     private int yearsOfExperience;
     private int reportingManagerId;
+    private String reportingManagerName;
     private String companyName;
     private String deviceId;
-    
-    
 
     public String getEmployeeId() {
         return employeeId;
@@ -172,6 +171,14 @@ public class EmployeeRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getReportingManagerName() {
+        return reportingManagerName;
+    }
+
+    public void setReportingManagerName(String reportingManagerName) {
+        this.reportingManagerName = reportingManagerName;
     }
 
 }

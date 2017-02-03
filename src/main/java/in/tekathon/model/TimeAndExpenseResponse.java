@@ -18,7 +18,6 @@ import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "TIMEANDEXPENSE")
 @XmlRootElement
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "fillTimeSheetProcedure", query = "CALL TIMESHEET_INFO(:id, :latitude, :longitude, :comments, :attendanceMode, :absenceCategory, :leaveReason,:insertDate,:endDate, :statusFlag)", resultClass = TimeAndExpenseResponse.class)
+    @NamedNativeQuery(name = "fillTimeSheetProcedure", query = "CALL TIMESHEET_INFO(:id, :latitude, :longitude, :comments, :attendanceMode, :absenceCategory, :leaveReason,:insertDate,:endDate, :statusFlag)", resultClass = TimeAndExpenseResponse.class),
+    @NamedNativeQuery(name = "mannagerApprovalQuery", query = "CALL TIMESHEET_INFO(:id, :latitude, :longitude, :comments, :attendanceMode, :absenceCategory, :leaveReason,:insertDate,:endDate, :statusFlag)", resultClass = TimeAndExpenseResponse.class)
 
 })
 @JsonIgnoreProperties({"employeeId", "projectId"})

@@ -34,9 +34,7 @@ public class EmployeeImpl implements EmployeeIntf {
 //            String sql = queryManager.getQuery("EmployeeController", "getAllEmployees");
             String findAll = "FROM EmployeeResponse";
             Query query = session.createQuery(findAll, EmployeeResponse.class);
-            System.out.println("Hello");
             List<EmployeeResponse> employeeList = query.getResultList();
-            System.out.println("Hello1");
             for (int i = 0; i < employeeList.size(); i++) {
                 EmployeeResponse employee = employeeList.get(i);
                 System.out.println("Enter" + employee.getEmployeeId());
@@ -78,7 +76,7 @@ public class EmployeeImpl implements EmployeeIntf {
     }
 
     @Override
-    public List<EmployeeResponse> insertEmployee(EmployeeRequest employee) {
+    public int insertEmployee(EmployeeRequest employee) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
@@ -98,12 +96,13 @@ public class EmployeeImpl implements EmployeeIntf {
             query.setParameter("dateOfJoining", employee.getDateOfJoining());
             query.setParameter("yearsOfExperience", employee.getYearsOfExperience());
             query.setParameter("reportingManagerId", employee.getReportingManagerId());
+            query.setParameter("reportingManagerName", employee.getReportingManagerName());
             query.setParameter("companyName", employee.getCompanyName());
             query.setParameter("deviceId", employee.getDeviceId());
+            int executeUpdate = query.executeUpdate();
 
-            List<EmployeeResponse> result = query.list();;
             transaction.commit();
-            return result;
+            return executeUpdate;
         } catch (HibernateException ex) {
             transaction.rollback();
             logger.error("Exception :" + ex);
@@ -112,7 +111,7 @@ public class EmployeeImpl implements EmployeeIntf {
         } finally {
             session.close();
         }
-        return null;
+        return 0;
     }
 
     @Override
@@ -127,7 +126,7 @@ public class EmployeeImpl implements EmployeeIntf {
             employeeResponse.setFirstName(employee.getFirstName() == null ? employeeResponse.getFirstName() : employee.getFirstName());
             employeeResponse.setLastName(employee.getLastName() == null ? employeeResponse.getLastName() : employee.getLastName());
             employeeResponse.setPassword(employee.getPassword() == null ? employeeResponse.getPassword() : employee.getPassword());
-            employeeResponse.setStreet(employee.getStreet() == null ? employeeResponse.getStreet(): employee.getStreet());
+            employeeResponse.setStreet(employee.getStreet() == null ? employeeResponse.getStreet() : employee.getStreet());
             employeeResponse.setCity(employee.getCity() == null ? employeeResponse.getCity() : employee.getCity());
             employeeResponse.setState(employee.getState() == null ? employeeResponse.getState() : employee.getState());
             employeeResponse.setPincode(employee.getPincode() == null ? employeeResponse.getPincode() : employee.getPincode());
@@ -162,7 +161,11 @@ public class EmployeeImpl implements EmployeeIntf {
             transaction = session.beginTransaction();
 
             EmployeeResponse employee = (EmployeeResponse) session.get(EmployeeResponse.class, employeeId);
-            session.delete(employee);
+            if (employee == null) {
+                return 0;
+            } else {
+                session.delete(employee);
+            }
             transaction.commit();
             return 1;
         } catch (HibernateException ex) {

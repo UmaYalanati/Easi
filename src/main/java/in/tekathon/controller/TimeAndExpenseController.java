@@ -9,6 +9,7 @@ import in.tekathon.common.URIConstants;
 import in.tekathon.model.TimeAndExpenseResponse;
 import in.tekathon.service.TimeAndExpenseImpl;
 import java.util.List;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,40 +30,40 @@ public class TimeAndExpenseController {
     TimeAndExpenseImpl report = new TimeAndExpenseImpl();
 
     @GET
-    @Path(URIConstants.CHECKINTIMESHEET)
+    @Path(URIConstants.CHECKINOUTTIMESHEET)
     @Produces({MediaType.APPLICATION_JSON})
-    public Response checkinTimeSheet(
-            @QueryParam("employeeId") int employeeId,
+    public Response checkTimeSheet(
+            @QueryParam("id") int id,
             @QueryParam("latitude") double latitude,
             @QueryParam("longitude") double longitude,
             @QueryParam("comments") String comments,
-            @QueryParam("attendanceMode") String attendanceMode) {
+            @QueryParam("attendanceMode") String attendanceMode,
+            @QueryParam("flag") @Pattern(regexp = "^.{1,2}$") int flag) {
 
-        List<TimeAndExpenseResponse> response = report.checkinTimeSheet(employeeId, latitude, longitude, comments, attendanceMode);
+        TimeAndExpenseResponse response = report.checkTimeSheet(id, latitude, longitude, comments, attendanceMode, flag);
         if (response == null) {
             return Response.status(Response.Status.NO_CONTENT).entity(response).build();
         }
         return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
-    @GET
-    @Path(URIConstants.CHECKOUTTIMESHEET)
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response checkoutTimeSheet(
-            @QueryParam("timesheetId") int timesheetId,
-            @QueryParam("latitude") double latitude,
-            @QueryParam("longitude") double longitude,
-            @QueryParam("comments") String comments,
-            @QueryParam("attendanceMode") String attendanceMode) {
-
-        List<TimeAndExpenseResponse> response = report.checkoutTimeSheet(timesheetId, latitude, longitude, comments, attendanceMode);
-
-        if (response == null) {
-            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
-        }
-        return Response.status(Response.Status.CREATED).entity(response).build();
-    }
-
+//    @GET
+//    @Path(URIConstants.CHECKOUTTIMESHEET)
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public Response checkoutTimeSheet(
+//            @QueryParam("timesheetId") int timesheetId,
+//            @QueryParam("latitude") double latitude,
+//            @QueryParam("longitude") double longitude,
+//            @QueryParam("comments") String comments,
+//            @QueryParam("attendanceMode") String attendanceMode) {
+//
+//        List<TimeAndExpenseResponse> response = report.checkoutTimeSheet(timesheetId, latitude, longitude, comments, attendanceMode);
+//
+//        if (response == null) {
+//            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
+//        }
+//        return Response.status(Response.Status.CREATED).entity(response).build();
+//    }
     @GET
     @Path(URIConstants.GETTIMESHEETBYID)
     @Produces({MediaType.APPLICATION_JSON})
@@ -92,6 +93,22 @@ public class TimeAndExpenseController {
             @QueryParam("leaveComments") String leaveComments) {
 
         List<TimeAndExpenseResponse> response = report.leaveApplication(employeeId, attendanceMode, absenceCategory, leaveReason, startDate, endDate, leaveComments);
+        if (response == null) {
+            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(response).build();
+    }
+
+    @GET
+    @Path(URIConstants.MANAGERAPPROVAL)
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response managerApproval(
+            @QueryParam("employeeId") int employeeId,
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate,
+            @QueryParam("status") String status) {
+
+        List<TimeAndExpenseResponse> response = report.managerApproval(employeeId, startDate, endDate, status);
         if (response == null) {
             return Response.status(Response.Status.NO_CONTENT).entity(response).build();
         }

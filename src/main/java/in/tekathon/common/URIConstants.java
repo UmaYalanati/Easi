@@ -26,9 +26,10 @@ public class URIConstants {
 
 //    Time And Expense Controller
     public static final String TIMEANDEXPENSECONTROLLER = "/timeandexpense";
-    public static final String CHECKINTIMESHEET = "/checkinTimeSheet";
+    public static final String CHECKINOUTTIMESHEET = "/checkIn-OutTimeSheet";
     public static final String CHECKOUTTIMESHEET = "/checkoutTimeSheet";
     public static final String GETTIMESHEETREPORT = "/getTimesheetReport";
     public static final String GETTIMESHEETBYID = "/timesheetById";
     public static final String APPLY_LEAVES = "/applyLeaves";
+    public static final String MANAGERAPPROVAL = "/managerApproval";
 }
