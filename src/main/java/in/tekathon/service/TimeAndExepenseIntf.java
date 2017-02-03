@@ -14,11 +14,9 @@ import java.util.List;
  */
 public interface TimeAndExepenseIntf {
 
-    
-
     public TimeAndExpenseResponse checkTimeSheet(int employeeId, double latitude, double longitude, String comments, String attendanceMode, int flag);
 
     public List<TimeAndExpenseResponse> getTimesheetById(int employeeId, String fromDate, String toDate);
 
-    public List<TimeAndExpenseResponse> managerApproval(int employeeId, String startDate, String endDate, String status);
+    
 }

@@ -26,7 +26,6 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
     Session session = HibernateUtil.getSessionFactory().openSession();
     Transaction transaction = null;
 
-
     @Override
     public TimeAndExpenseResponse checkTimeSheet(int id, double latitude, double longitude, String comments, String attendanceMode, int flag) {
         try {
@@ -128,29 +127,6 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
             session.close();
         }
         return null;
-    }
-
-    public List<TimeAndExpenseResponse> managerApproval(int employeeId, String startDate, String endDate, String status) {
-        try {
-            transaction = session.beginTransaction();
-
-            transaction = session.beginTransaction();
-
-            Query query = session.getNamedQuery("mannagerApprovalQuery");
-
-            query.setParameter("id", employeeId);
-            query.setParameter("insertDate", startDate);
-            query.setParameter("endDate", endDate);
-            query.setParameter("status", status);
-
-            List<TimeAndExpenseResponse> response = query.list();
-            transaction.commit();
-            return response;
-
-        } finally {
-            session.close();
-        }
-
     }
 
 }

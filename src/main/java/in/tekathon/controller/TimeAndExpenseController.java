@@ -47,23 +47,6 @@ public class TimeAndExpenseController {
         return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
-//    @GET
-//    @Path(URIConstants.CHECKOUTTIMESHEET)
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Response checkoutTimeSheet(
-//            @QueryParam("timesheetId") int timesheetId,
-//            @QueryParam("latitude") double latitude,
-//            @QueryParam("longitude") double longitude,
-//            @QueryParam("comments") String comments,
-//            @QueryParam("attendanceMode") String attendanceMode) {
-//
-//        List<TimeAndExpenseResponse> response = report.checkoutTimeSheet(timesheetId, latitude, longitude, comments, attendanceMode);
-//
-//        if (response == null) {
-//            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
-//        }
-//        return Response.status(Response.Status.CREATED).entity(response).build();
-//    }
     @GET
     @Path(URIConstants.GETTIMESHEETBYID)
     @Produces({MediaType.APPLICATION_JSON})
@@ -74,23 +57,6 @@ public class TimeAndExpenseController {
     ) {
         List<TimeAndExpenseResponse> response = report.getTimesheetById(employeeId, fromDate, toDate);
 
-        if (response == null) {
-            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
-        }
-        return Response.status(Response.Status.CREATED).entity(response).build();
-    }
-
-
-    @GET
-    @Path(URIConstants.MANAGERAPPROVAL)
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response managerApproval(
-            @QueryParam("employeeId") int employeeId,
-            @QueryParam("startDate") String startDate,
-            @QueryParam("endDate") String endDate,
-            @QueryParam("status") String status) {
-
-        List<TimeAndExpenseResponse> response = report.managerApproval(employeeId, startDate, endDate, status);
         if (response == null) {
             return Response.status(Response.Status.NO_CONTENT).entity(response).build();
         }

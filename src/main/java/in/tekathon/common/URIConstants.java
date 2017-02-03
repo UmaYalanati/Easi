@@ -30,6 +30,8 @@ public class URIConstants {
     public static final String CHECKOUTTIMESHEET = "/checkoutTimeSheet";
     public static final String GETTIMESHEETREPORT = "/getTimesheetReport";
     public static final String GETTIMESHEETBYID = "/timesheetById";
+
+    // Leave Controller
     public static final String APPLY_LEAVES = "/applyLeaves";
     public static final String MANAGERAPPROVAL = "/managerApproval";
 }

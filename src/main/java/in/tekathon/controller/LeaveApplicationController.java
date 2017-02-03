@@ -33,7 +33,7 @@ public class LeaveApplicationController {
     @Path(URIConstants.APPLY_LEAVES)
     @Produces({MediaType.APPLICATION_JSON})
     public Response leaveApplication(
-            @QueryParam("employeeId") int employeeId,
+            @QueryParam("id") int id,
             @QueryParam("attendanceMode") String attendanceMode,
             @QueryParam("absenceCategory") String absenceCategory,
             @QueryParam("leaveReason") String leaveReason,
@@ -41,7 +41,24 @@ public class LeaveApplicationController {
             @QueryParam("endDate") String endDate,
             @QueryParam("leaveComments") String leaveComments) {
 
-        LeaveApplicationResponse response = applyLeaveDao.leaveApplication(employeeId, attendanceMode, absenceCategory, leaveReason, startDate, endDate, leaveComments);
+        LeaveApplicationResponse response = applyLeaveDao.leaveApplication(id, attendanceMode, absenceCategory, leaveReason, startDate, endDate, leaveComments);
+        if (response == null) {
+            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(response).build();
+    }
+
+    @GET
+    @Path(URIConstants.MANAGERAPPROVAL)
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response managerApproval(
+            @QueryParam("id") int id,
+            @QueryParam("status") String status) {
+        
+        
+        System.out.println("status"+status);
+
+        LeaveApplicationResponse response = applyLeaveDao.managerApproval(id, null, null, status);
         if (response == null) {
             return Response.status(Response.Status.NO_CONTENT).entity(response).build();
         }

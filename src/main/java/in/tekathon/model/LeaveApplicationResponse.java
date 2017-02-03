@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "LEAVE_DETAILS")
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "leaveDetailsProcedure", query = "CALL LEAVE_INFO(:employeeId, :absenceCategory, :attendanceMode, :leaveReason, :startDate, :endDate, :status, :noOfDays, :comments, :statusFlag)", resultClass = LeaveApplicationResponse.class)
+    @NamedNativeQuery(name = "leaveDetailsProcedure", query = "CALL LEAVE_INFO(:id, :absenceCategory, :attendanceMode, :leaveReason, :startDate, :endDate, :status, :comments, :statusFlag)", resultClass = LeaveApplicationResponse.class)
 })
 public class LeaveApplicationResponse implements Serializable {
 
