@@ -12,5 +12,6 @@
         <mapping class="in.tekathon.model.ProjectDetailsResponse"/>
         <mapping class="in.tekathon.model.TimeAndExpenseResponse"/>
         <mapping class="in.tekathon.model.SkillsResponse"/>
+        <mapping class="in.tekathon.model.LeaveApplicationResponse"/>
     </session-factory>
 </hibernate-configuration>

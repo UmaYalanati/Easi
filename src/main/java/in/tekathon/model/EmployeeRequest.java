@@ -5,7 +5,10 @@
  */
 package in.tekathon.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,30 +21,38 @@ public class EmployeeRequest {
 
     private static final long serialVersionUID = 1L;
 
-    private String employeeId;
+    private int employeeId;
     private String firstName;
     private String lastName;
+    private String userName;
     private String password;
     private String street;
     private String city;
     private String state;
     private String pincode;
     private String country;
+    private String emailId;
     private String contactNo;
     private String dateOfBirth;
     private String designation;
     private String dateOfJoining;
     private int yearsOfExperience;
     private int reportingManagerId;
-    private String reportingManagerName;
+    private Float casualLeaves;
+    private int earnedLeaves;
+    private int sickLeaves;
+    private int compOffs;
+    private int sharedLeaves;
+    private String createdDate;
     private String companyName;
     private String deviceId;
+    private String reportingManagerName;
 
-    public String getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -59,6 +70,22 @@ public class EmployeeRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getStreet() {
@@ -99,6 +126,14 @@ public class EmployeeRequest {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
     public String getContactNo() {
@@ -149,6 +184,54 @@ public class EmployeeRequest {
         this.reportingManagerId = reportingManagerId;
     }
 
+    public Float getCasualLeaves() {
+        return casualLeaves;
+    }
+
+    public void setCasualLeaves(Float casualLeaves) {
+        this.casualLeaves = casualLeaves;
+    }
+
+    public int getEarnedLeaves() {
+        return earnedLeaves;
+    }
+
+    public void setEarnedLeaves(int earnedLeaves) {
+        this.earnedLeaves = earnedLeaves;
+    }
+
+    public int getSickLeaves() {
+        return sickLeaves;
+    }
+
+    public void setSickLeaves(int sickLeaves) {
+        this.sickLeaves = sickLeaves;
+    }
+
+    public int getCompOffs() {
+        return compOffs;
+    }
+
+    public void setCompOffs(int compOffs) {
+        this.compOffs = compOffs;
+    }
+
+    public int getSharedLeaves() {
+        return sharedLeaves;
+    }
+
+    public void setSharedLeaves(int sharedLeaves) {
+        this.sharedLeaves = sharedLeaves;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public String getCompanyName() {
         return companyName;
     }
@@ -163,14 +246,6 @@ public class EmployeeRequest {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getReportingManagerName() {

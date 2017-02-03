@@ -80,24 +80,6 @@ public class TimeAndExpenseController {
         return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
-    @GET
-    @Path(URIConstants.APPLY_LEAVES)
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response leaveApplication(
-            @QueryParam("employeeId") int employeeId,
-            @QueryParam("attendanceMode") String attendanceMode,
-            @QueryParam("absenceCategory") String absenceCategory,
-            @QueryParam("leaveReason") String leaveReason,
-            @QueryParam("startDate") String startDate,
-            @QueryParam("endDate") String endDate,
-            @QueryParam("leaveComments") String leaveComments) {
-
-        List<TimeAndExpenseResponse> response = report.leaveApplication(employeeId, attendanceMode, absenceCategory, leaveReason, startDate, endDate, leaveComments);
-        if (response == null) {
-            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
-        }
-        return Response.status(Response.Status.CREATED).entity(response).build();
-    }
 
     @GET
     @Path(URIConstants.MANAGERAPPROVAL)
