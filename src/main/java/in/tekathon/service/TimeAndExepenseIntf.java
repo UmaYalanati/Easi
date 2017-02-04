@@ -18,5 +18,6 @@ public interface TimeAndExepenseIntf {
 
     public List<TimeAndExpenseResponse> getTimesheetById(int employeeId, String fromDate, String toDate);
 
-    
+    public TimeAndExpenseResponse managerApproval(int id, String status);
+
 }

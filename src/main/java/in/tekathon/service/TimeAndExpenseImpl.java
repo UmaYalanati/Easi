@@ -6,6 +6,8 @@
 package in.tekathon.service;
 
 import in.tekathon.connection.HibernateUtil;
+import in.tekathon.model.EmployeeResponse;
+import in.tekathon.model.LeaveApplicationResponse;
 import in.tekathon.model.TimeAndExpenseResponse;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -127,6 +129,46 @@ public class TimeAndExpenseImpl implements TimeAndExepenseIntf {
             session.close();
         }
         return null;
+    }
+
+    public List<TimeAndExpenseResponse> timeSheetReport(int employeeId, String startDate, String endDate) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
+
+            String findByEmployeeid = "SELECT e FROM TimeAndExpenseResponse e WHERE employeeId = :employeeId and startDate = :startDate and endDate = :endDate";
+            Query query = session.createQuery(findByEmployeeid, LeaveApplicationResponse.class);
+            query.setParameter("employeeId", employeeId);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+
+            List<TimeAndExpenseResponse> response = query.list();
+            transaction.commit();
+            return response;
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            logger.error("Exception :" + ex);
+        } catch (Exception ex) {
+            logger.error("Exception :" + ex);
+        } finally {
+            session.close();
+        }
+        return null;
+    }
+
+    public TimeAndExpenseResponse managerApproval(int id, String status) {
+        try {
+            transaction = session.beginTransaction();
+
+            TimeAndExpenseResponse response = (TimeAndExpenseResponse) session.get(TimeAndExpenseResponse.class, id);
+            response.setStatus(status);
+
+            transaction.commit();
+            return response;
+
+        } finally {
+            session.close();
+        }
     }
 
 }

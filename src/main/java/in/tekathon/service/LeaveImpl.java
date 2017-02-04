@@ -29,13 +29,13 @@ public class LeaveImpl implements LeaveIntf {
     Transaction transaction = null;
     EmployeeImpl employeeDao = new EmployeeImpl();
 
-    public LeaveApplicationResponse leaveApplication(int id, String absenceCategory, String attendanceMode, String leaveReason, String startDate, String endDate, String leaveComments) {
+    public LeaveApplicationResponse leaveApplication(int id, int reportingManagerId, String absenceCategory, String attendanceMode, String leaveReason, String startDate, String endDate, String leaveComments) {
         try {
+
             transaction = session.beginTransaction();
-//            String sql = queryManager.getQuery("TimeAndExpenseController", "applyLeaves");
-            int noOfDays = 0;
             Query query = session.getNamedQuery("leaveDetailsProcedure");
             query.setParameter("id", id);
+            query.setParameter("reportingManagerId", reportingManagerId);
             query.setParameter("absenceCategory", absenceCategory);
             query.setParameter("attendanceMode", attendanceMode);
             query.setParameter("leaveReason", leaveReason);
@@ -59,27 +59,30 @@ public class LeaveImpl implements LeaveIntf {
         return null;
     }
 
-    public LeaveApplicationResponse managerApproval(int id, String startDate, String endDate, String status) {
+    public LeaveApplicationResponse managerApproval(int id, String status) {
         try {
             int noOfDays = 0;
             transaction = session.beginTransaction();
 
             Query query = session.getNamedQuery("leaveDetailsProcedure");
+
             query.setParameter("id", id);
             query.setParameter("absenceCategory", null);
             query.setParameter("attendanceMode", null);
             query.setParameter("leaveReason", null);
-            query.setParameter("startDate", startDate);
-            query.setParameter("endDate", endDate);
+            query.setParameter("startDate", null);
+            query.setParameter("endDate", null);
             query.setParameter("status", status.toUpperCase());
             query.setParameter("comments", null);
-            query.setParameter("statusFlag", 1);
-            
-            LeaveApplicationResponse response = (LeaveApplicationResponse) query.uniqueResult();
+            query.setParameter("statusFlag", 2);
+
+            List<LeaveApplicationResponse> response = query.list();
+            LeaveApplicationResponse employee = response.get(0);
 
             if (response != null) {
-                int employeeId = response.getEmployeeId();
-                String absenceCategory = response.getAbsenceCategory().toUpperCase();
+                int employeeId = employee.getEmployeeId();
+                noOfDays = employee.getNoOfDays();
+                String absenceCategory = employee.getAbsenceCategory().toUpperCase();
                 EmployeeResponse employees = employeeDao.getEmployeeById(employeeId);
 
                 switch (absenceCategory) {
@@ -103,12 +106,37 @@ public class LeaveImpl implements LeaveIntf {
 
             }
             transaction.commit();
-            return response;
+            return employee;
 
         } finally {
             session.close();
         }
 
+    }
+
+    public List<LeaveApplicationResponse> leaveDetailsReport(int employeeId, String startDate, String endDate) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
+
+            String findByEmployeeid = "SELECT e FROM LeaveApplicationResponse e WHERE employeeId = :employeeId and startDate = :startDate and endDate = :endDate";
+            Query query = session.createQuery(findByEmployeeid, LeaveApplicationResponse.class);
+            query.setParameter("employeeId", employeeId);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+
+            List<LeaveApplicationResponse> response = query.list();
+            transaction.commit();
+            return response;
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            logger.error("Exception :" + ex);
+        } catch (Exception ex) {
+            logger.error("Exception :" + ex);
+        } finally {
+            session.close();
+        }
+        return null;
     }
 
 }

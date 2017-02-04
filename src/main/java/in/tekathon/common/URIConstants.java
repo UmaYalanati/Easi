@@ -34,4 +34,5 @@ public class URIConstants {
     // Leave Controller
     public static final String APPLY_LEAVES = "/applyLeaves";
     public static final String MANAGERAPPROVAL = "/managerApproval";
+    public static final String LEAVEDETAILSREPORT = "/leaveDetailsReport";
 }

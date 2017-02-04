@@ -13,53 +13,35 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "LEAVE_DETAILS")
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "leaveDetailsProcedure", query = "CALL LEAVE_INFO(:id, :absenceCategory, :attendanceMode, :leaveReason, :startDate, :endDate, :status, :comments, :statusFlag)", resultClass = LeaveApplicationResponse.class)
+    @NamedNativeQuery(name = "leaveDetailsProcedure", query = "CALL LEAVE_INFO(:id,:reportingManagerId,:absenceCategory, :attendanceMode, :leaveReason, :startDate, :endDate, :status, :comments, :statusFlag)", resultClass = LeaveApplicationResponse.class)
 })
 public class LeaveApplicationResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "LEAVEID")
     private Integer leaveId;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "EMPLOYEEID")
     private int employeeId;
-    @Size(max = 1000)
     @Column(name = "ABSENCECATEGORY")
     private String absenceCategory;
-    @Size(max = 100)
     @Column(name = "ATTENDANCEMODE")
     private String attendanceMode;
-    @Size(max = 1000)
     @Column(name = "LEAVEREASON")
     private String leaveReason;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "STARTDATE")
     private String startDate;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "ENDDATE")
     private String endDate;
-    @Size(max = 100)
     @Column(name = "STATUS")
     private String status;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "NOOFDAYS")
     private int noOfDays;
-    @Size(max = 1000)
     @Column(name = "COMMENTS")
     private String leaveComments;
     @Column(name = "REPORTINGMANAGERID")

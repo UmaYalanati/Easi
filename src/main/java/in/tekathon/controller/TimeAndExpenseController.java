@@ -6,6 +6,7 @@
 package in.tekathon.controller;
 
 import in.tekathon.common.URIConstants;
+import in.tekathon.model.LeaveApplicationResponse;
 import in.tekathon.model.TimeAndExpenseResponse;
 import in.tekathon.service.TimeAndExpenseImpl;
 import java.util.List;
@@ -14,15 +15,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author administrator
- */
 @Path(URIConstants.TIMEANDEXPENSECONTROLLER)
 public class TimeAndExpenseController {
 
@@ -57,6 +55,22 @@ public class TimeAndExpenseController {
     ) {
         List<TimeAndExpenseResponse> response = report.getTimesheetById(employeeId, fromDate, toDate);
 
+        if (response == null) {
+            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(response).build();
+    }
+
+    @GET
+    @Path(URIConstants.MANAGERAPPROVAL)
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response managerApproval(
+            @QueryParam("id") int id,
+            @QueryParam("status") String status) {
+
+        System.out.println("status" + status);
+
+        TimeAndExpenseResponse response = report.managerApproval(id, status);
         if (response == null) {
             return Response.status(Response.Status.NO_CONTENT).entity(response).build();
         }

@@ -6,7 +6,6 @@
 package in.tekathon.service;
 
 import in.tekathon.model.LeaveApplicationResponse;
-import in.tekathon.model.TimeAndExpenseResponse;
 import java.util.List;
 
 /**
@@ -15,8 +14,10 @@ import java.util.List;
  */
 interface LeaveIntf {
 
-    public LeaveApplicationResponse leaveApplication(int employeeId, String attendanceMode, String absenceCategory, String leaveReason, String startDate, String endDate, String comments);
-    
-    public LeaveApplicationResponse managerApproval(int employeeId, String startDate, String endDate, String status);
+    public LeaveApplicationResponse leaveApplication(int id, int reportingManagerId, String absenceCategory, String attendanceMode, String leaveReason, String startDate, String endDate, String leaveComments);
+
+    public LeaveApplicationResponse managerApproval(int employeeId, String status);
+
+    public List<LeaveApplicationResponse> leaveDetailsReport(int id, String startDate, String endDate);
 
 }

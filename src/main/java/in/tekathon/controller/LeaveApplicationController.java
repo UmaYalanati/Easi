@@ -7,7 +7,6 @@ package in.tekathon.controller;
 
 import in.tekathon.common.URIConstants;
 import in.tekathon.model.LeaveApplicationResponse;
-import in.tekathon.model.TimeAndExpenseResponse;
 import in.tekathon.service.LeaveImpl;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -34,6 +33,7 @@ public class LeaveApplicationController {
     @Produces({MediaType.APPLICATION_JSON})
     public Response leaveApplication(
             @QueryParam("id") int id,
+            @QueryParam("reportingManagerId") int reportingManagerId,
             @QueryParam("attendanceMode") String attendanceMode,
             @QueryParam("absenceCategory") String absenceCategory,
             @QueryParam("leaveReason") String leaveReason,
@@ -41,7 +41,7 @@ public class LeaveApplicationController {
             @QueryParam("endDate") String endDate,
             @QueryParam("leaveComments") String leaveComments) {
 
-        LeaveApplicationResponse response = applyLeaveDao.leaveApplication(id, attendanceMode, absenceCategory, leaveReason, startDate, endDate, leaveComments);
+        LeaveApplicationResponse response = applyLeaveDao.leaveApplication(id, reportingManagerId, absenceCategory, attendanceMode, leaveReason, startDate, endDate, leaveComments);
         if (response == null) {
             return Response.status(Response.Status.NO_CONTENT).entity(response).build();
         }
@@ -54,11 +54,26 @@ public class LeaveApplicationController {
     public Response managerApproval(
             @QueryParam("id") int id,
             @QueryParam("status") String status) {
-        
-        
-        System.out.println("status"+status);
 
-        LeaveApplicationResponse response = applyLeaveDao.managerApproval(id, null, null, status);
+        System.out.println("status" + status);
+
+        LeaveApplicationResponse response = applyLeaveDao.managerApproval(id, status);
+        if (response == null) {
+            return Response.status(Response.Status.NO_CONTENT).entity(response).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(response).build();
+    }
+
+    @GET
+    @Path(URIConstants.LEAVEDETAILSREPORT)
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response leaveDetailsReport(
+            @QueryParam("employeeId") int employeeId,
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate
+    ) {
+
+        List<LeaveApplicationResponse> response = applyLeaveDao.leaveDetailsReport(employeeId, startDate, endDate);
         if (response == null) {
             return Response.status(Response.Status.NO_CONTENT).entity(response).build();
         }
